@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Lingua Bridge — Hack Any Language</title>
+  <meta name="description" content="Lingua Bridge — learn languages through structure, patterns, and context. 4000 core words + 40 context texts.">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent-color: #e94560;
+      --heading-color: #1a1a2e;
+      --nav-hover-color: #e94560;
+      --nav-color: #1a1a2e;
+      --background-color: #ffffff;
+      --surface-color: #ffffff;
+      --default-color: #212529;
+      --bs-primary: #e94560;
+      --bs-primary-rgb: 233, 69, 96;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-family: 'Rubik', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at 15% 20%, rgba(233, 69, 96, 0.12), transparent 55%),
+                  radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.08), transparent 45%),
+                  radial-gradient(circle at 30% 80%, rgba(64, 120, 255, 0.10), transparent 55%),
+                  linear-gradient(180deg, #0f1222 0%, #0b0f1f 100%);
+    }
+    body.theme-dark {
+      background: radial-gradient(circle at 15% 20%, rgba(233, 69, 96, 0.12), transparent 55%),
+                  radial-gradient(circle at 85% 10%, rgba(255, 255, 255, 0.06), transparent 45%),
+                  radial-gradient(circle at 30% 80%, rgba(64, 120, 255, 0.08), transparent 55%),
+                  linear-gradient(180deg, #0f1222 0%, #0b0f1f 100%);
+    }
+    h1, h2, h3, h4, h5, h6, .sitename { font-family: 'Montserrat', 'Rubik', system-ui, sans-serif; letter-spacing: 0.2px; }
+
+    #tsparticles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.32;
+    }
+    #tsparticles canvas { filter: none; }
+    body.theme-dark #tsparticles { opacity: 0.28; }
+    #flag-floaters {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #flag-floaters img {
+      position: absolute;
+      width: 48px;
+      height: 36px;
+      opacity: 0.18;
+      filter: none;
+      animation: none;
+      will-change: transform;
+    }
+    .header, .main, .footer { position: relative; z-index: 1; }
+    body.theme-dark {
+      --background-color: #0f1222;
+      --default-color: #f6f7ff;
+      --heading-color: #ffffff;
+      --surface-color: #171b32;
+      --contrast-color: #ffffff;
+      --nav-color: #f6f7ff;
+      --nav-hover-color: #e94560;
+      --nav-mobile-background-color: #15182e;
+      --nav-dropdown-background-color: #15182e;
+      --nav-dropdown-color: #f6f7ff;
+    }
+    body.theme-dark .header { background-color: #15182e; }
+    body.theme-dark .icon-boxes .icon-box { box-shadow: 0px 5px 90px rgba(0,0,0,.35); }
+    body.theme-dark .service-item { box-shadow: 0px 5px 90px rgba(0,0,0,.35); }
+    body.theme-dark .text-muted { color: rgba(246, 247, 255, 0.78) !important; }
+    body.theme-dark .sample-card,
+    body.theme-dark .sample-box,
+    body.theme-dark .method-card,
+    body.theme-dark .info-item { border-color: rgba(255,255,255,0.08); }
+
+    body.lang-en .lang-ru { display: none; }
+    body.lang-ru .lang-en { display: none; }
+
+    .header-actions .btn { line-height: 1; }
+    .header-actions .btn.active { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
+    .header {
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+      background-color: color-mix(in srgb, var(--background-color), transparent 12%);
+    }
+    .logo .sitename { font-weight: 700; letter-spacing: 0.2px; }
+    .logo .sitename span { color: var(--accent-color); }
+    .navmenu ul { gap: 18px; }
+    .navmenu a {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      color: var(--accent-color);
+      transition: all 0.2s ease;
+    }
+    .navmenu a.active,
+    .navmenu a:hover {
+      background: color-mix(in srgb, var(--accent-color), transparent 80%);
+      color: #fff;
+    }
+    body.theme-dark .navmenu a { color: var(--accent-color); }
+    body.theme-dark .navmenu a.active,
+    body.theme-dark .navmenu a:hover {
+      background: rgba(233,69,96,0.22);
+      color: #fff;
+    }
+    .header-actions .btn {
+      border-radius: 10px;
+      font-weight: 600;
+      padding: 6px 10px;
+    }
+
+    .sample-card {
+      background: color-mix(in srgb, var(--surface-color), transparent 32%);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0px 5px 40px rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(10px);
+    }
+    .sample-zh { font-size: 30px; font-weight: 700; font-family: 'Montserrat', 'Rubik', sans-serif; }
+    .sample-py { font-size: 13px; color: color-mix(in srgb, var(--default-color), transparent 35%); }
+    .sample-box {
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 16px;
+      background: color-mix(in srgb, var(--surface-color), transparent 36%);
+      backdrop-filter: blur(8px);
+    }
+    .speak-btn {
+      width: 30px; height: 30px; border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+      background: var(--surface-color); color: var(--accent-color);
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .speak-btn:hover { border-color: var(--accent-color); }
+    .text-accent { color: var(--accent-color); }
+
+    /* Dark mode for light sections */
+    body.theme-dark .light-background {
+      --background-color: #12172d;
+      --default-color: #f6f7ff;
+      --heading-color: #ffffff;
+      --surface-color: #171b32;
+      --contrast-color: #ffffff;
+    }
+
+    /* Section backgrounds to reveal subtle motion behind */
+    .section { background: transparent !important; }
+    .light-background { background: transparent !important; }
+
+    /* Compact layout overrides */
+    section, .section { padding: 44px 0; }
+    .section-title { padding-bottom: 22px; }
+    .hero { padding-top: 64px; padding-bottom: 34px; }
+    .hero .icon-boxes { padding-bottom: 30px; }
+    .hero .icon-box { padding: 30px 22px; background: color-mix(in srgb, var(--surface-color), transparent 30%); backdrop-filter: blur(10px); }
+    .services .service-item { padding: 32px 24px; background: color-mix(in srgb, var(--surface-color), transparent 30%); backdrop-filter: blur(10px); }
+    .contact .info-item { padding: 18px 16px; background: color-mix(in srgb, var(--surface-color), transparent 30%); backdrop-filter: blur(10px); }
+    .contact .info-item + .info-item { margin-top: 0; }
+    .footer { padding-top: 20px; padding-bottom: 20px; }
+
+    .story-media {
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,.12);
+      height: auto;
+      max-width: 520px;
+      margin-left: auto;
+    }
+    .story-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block; }
+    body.theme-dark .story-media { box-shadow: 0 18px 40px rgba(0,0,0,.45); }
+    .story-text p { line-height: 1.7; color: color-mix(in srgb, var(--default-color), transparent 12%); }
+    .story-text p strong { color: var(--heading-color); font-weight: 700; }
+    .story-text .story-accent { color: var(--accent-color); font-weight: 600; }
+    .story-text .story-lead { font-size: 1.02rem; }
+    body.theme-dark .story-text p { color: rgba(246,247,255,0.86); }
+    body.theme-dark .story-text p strong { color: #ffffff; }
+
+    .vision-bullets li { gap: 12px; }
+    .vision-emoji { font-size: 18px; line-height: 1; }
+
+    .method-card {
+      background: color-mix(in srgb, var(--surface-color), transparent 32%);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+      border-radius: 16px;
+      padding: 18px 18px;
+      height: 100%;
+      box-shadow: 0px 8px 24px rgba(0,0,0,0.08);
+      backdrop-filter: blur(10px);
+    }
+    .method-card p { margin: 0; }
+    .method-step {
+      width: 32px; height: 32px; border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--accent-color); font-weight: 700; font-size: 14px;
+      margin-bottom: 10px;
+    }
+    body.theme-dark .method-card { box-shadow: 0px 8px 28px rgba(0,0,0,0.35); }
+
+    .support-grid .info-item { text-align: center; }
+    .support-grid .info-item i { margin-right: 0; }
+    .flag-icon {
+      width: 20px;
+      height: 15px;
+      border-radius: 3px;
+      display: inline-block;
+      object-fit: cover;
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--default-color), transparent 75%);
+    }
+    .free-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #ff2b55;
+      background: #ff2b55;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 18px rgba(255,43,85,0.45);
+    }
+    body.theme-dark .free-badge { border-color: #ff2b55; }
+
+    .section-title h2 { font-size: 30px; letter-spacing: 0.2px; }
+    .section-title p { max-width: 720px; margin-left: auto; margin-right: auto; }
+    .btn-get-started {
+      border-radius: 999px;
+      box-shadow: 0 10px 24px rgba(233,69,96,0.25);
+    }
+    .btn-watch-video {
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 80%);
+      padding: 8px 14px;
+      gap: 8px;
+    }
+    body.theme-dark .btn-watch-video { border-color: rgba(255,255,255,0.15); }
+    .vision-cta {
+      display: flex;
+      justify-content: center;
+    }
+    .vision-cta .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-color);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 999px;
+      box-shadow: 0 12px 26px rgba(233,69,96,0.28);
+    }
+    .vision-cta .read-more:hover { background: #d93b55; color: #fff; }
+  </style>
+</head>
+
+<body class="index-page lang-en">
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
+
+      <a href="#hero" class="logo d-flex align-items-center">
+        <h1 class="sitename"><span>Lingua</span>Bridge</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="#hero" class="active"><span class="lang-en">Home</span><span class="lang-ru">Главная</span></a></li>
+          <li><a href="#vision"><span class="lang-en">Vision</span><span class="lang-ru">Идея</span></a></li>
+          <li><a href="#method"><span class="lang-en">Method</span><span class="lang-ru">Метод</span></a></li>
+          <li><a href="#languages"><span class="lang-en">Languages</span><span class="lang-ru">Языки</span></a></li>
+          <li><a href="#story"><span class="lang-en">Story</span><span class="lang-ru">История</span></a></li>
+          <li><a href="#support"><span class="lang-en">Support</span><span class="lang-ru">Поддержка</span></a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <div class="header-actions d-flex align-items-center gap-2">
+        <div class="btn-group">
+          <button class="btn btn-sm btn-outline-primary active" data-lang="en">EN</button>
+          <button class="btn btn-sm btn-outline-primary" data-lang="ru">RU</button>
+        </div>
+        <button class="btn btn-sm btn-outline-primary" data-theme="light" title="Light">☀️</button>
+        <button class="btn btn-sm btn-outline-primary" data-theme="dark" title="Dark">🌙</button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <section id="hero" class="hero section light-background">
+      <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-5">
+          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+            <div class="mb-2">
+              <span class="free-badge"><span class="lang-en">Free & Open‑Source</span><span class="lang-ru">Бесплатно и Open‑Source</span></span>
+            </div>
+            <h2><span class="lang-en">Hack Any Language. 4000 Words. Free Forever.</span><span class="lang-ru">Взломай <span class="text-accent">ЛЮБОЙ ЯЗЫК</span>. 4000 слов. Бесплатно навсегда.</span></h2>
+            <p><span class="lang-en">One structured page with the 4000 most useful words + 40 context texts. Learn the system, not the noise.</span><span class="lang-ru">Одна структурированная страница с 4000 самыми полезными словами + 40 текстов в контексте. Учишь систему, а не шум.</span></p>
+            <div class="d-flex align-items-center flex-wrap gap-3">
+              <a href="#languages" class="btn-get-started"><span class="lang-en">Choose a language</span><span class="lang-ru">Выбрать язык</span></a>
+              <a href="https://lemarshel.github.io/hsk-base/" class="btn-watch-video d-flex align-items-center"><img class="flag-icon me-2" src="assets/img/flags/cn.png" alt="China flag"><span><span class="lang-en">Chinese (HSK)</span><span class="lang-ru">Китайский (HSK)</span></span></a>
+              <a href="https://lemarshel.github.io/arabic-base/" class="btn-watch-video d-flex align-items-center"><img class="flag-icon me-2" src="assets/img/flags/sa.png" alt="Saudi Arabia flag"><span><span class="lang-en">Arabic (Beta)</span><span class="lang-ru">Арабский (Бета)</span></span></a>
+            </div>
+          </div>
+          <div class="col-lg-6 order-1 order-lg-2">
+            <div class="sample-card">
+              <div class="text-uppercase small text-muted"><span class="lang-en">Sample: Chinese</span><span class="lang-ru">Пример: Китайский</span></div>
+              <div class="d-flex align-items-center gap-3 mt-2">
+                <div class="sample-zh">电话</div>
+                <button class="speak-btn" data-say-zh="电话" data-lang-zh="zh-CN" title="Play">🔊</button>
+              </div>
+              <div class="sample-py">diànhuà</div>
+              <div class="mt-2"><span class="lang-en">telephone</span><span class="lang-ru">телефон</span></div>
+              <div class="sample-box">
+                <div class="d-flex align-items-center gap-2">
+                  <div>我给你打电话。</div>
+                  <button class="speak-btn" data-say-zh="我给你打电话。" data-lang-zh="zh-CN" title="Play">🔊</button>
+                </div>
+                <div class="sample-py">Wǒ gěi nǐ dǎ diànhuà.</div>
+                <div class="mt-2"><span class="lang-en">I'll give you a call.</span><span class="lang-ru">Я тебе позвоню.</span></div>
+              </div>
+              <div class="small text-muted mt-3"><span class="lang-en">Morphemes + phonetic groups + live context.</span><span class="lang-ru">Морфемы + фонетические группы + живой контекст.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="icon-boxes position-relative" data-aos="fade-up" data-aos-delay="200">
+        <div class="container position-relative">
+          <div class="row gy-4 mt-5">
+            <div class="col-xl-4 col-md-6">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-collection"></i></div>
+                <h4 class="title"><a href="#languages" class="stretched-link">4000+ <span class="lang-en">Core Words</span><span class="lang-ru">Ключевые слова</span></a></h4>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-6">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-journal-richtext"></i></div>
+                <h4 class="title"><a href="#method" class="stretched-link">40 <span class="lang-en">Context Texts</span><span class="lang-ru">Тексты в контексте</span></a></h4>
+              </div>
+            </div>
+            <div class="col-xl-4 col-md-6">
+              <div class="icon-box">
+                <div class="icon"><i class="bi bi-graph-up"></i></div>
+                <h4 class="title"><a href="#vision" class="stretched-link">95% <span class="lang-en">Daily Coverage</span><span class="lang-ru">Покрытие речи</span></a></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="vision" class="about section">
+      <div class="container">
+        <div class="row gy-3 align-items-center">
+          <div class="col-lg-6 content story-text" data-aos="fade-up" data-aos-delay="100">
+            <p class="who-we-are"><span class="lang-en">Vision</span><span class="lang-ru">Идея</span></p>
+            <div class="mb-2">
+              <span class="free-badge"><span class="lang-en">Free & Open‑Source</span><span class="lang-ru">Бесплатно и Open‑Source</span></span>
+            </div>
+            <h3><span class="lang-en">Simple, structured, and free forever.</span><span class="lang-ru">Просто, структурно и бесплатно навсегда.</span></h3>
+            <p class="fst-italic"><span class="lang-en">A language becomes one complete, structured page: the most useful words, grouped by the internal logic of the language.</span><span class="lang-ru">Язык превращается в одну полную структурированную страницу: самые полезные слова, сгруппированные по внутренней логике языка.</span></p>
+          </div>
+          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+            <ul class="list-unstyled vision-bullets">
+              <li class="d-flex align-items-start mb-3">
+                <span class="vision-emoji">⚡</span>
+                <span><span class="lang-en">Core vocabulary first — not random lists.</span><span class="lang-ru">Сначала ядро — не случайные списки.</span></span>
+              </li>
+              <li class="d-flex align-items-start mb-3">
+                <span class="vision-emoji">🧠</span>
+                <span><span class="lang-en">Words grouped by internal logic.</span><span class="lang-ru">Слова сгруппированы по внутренней логике.</span></span>
+              </li>
+              <li class="d-flex align-items-start">
+                <span class="vision-emoji">📘</span>
+                <span><span class="lang-en">Context texts to lock recognition in.</span><span class="lang-ru">Контекстные тексты закрепляют узнавание.</span></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="vision-cta text-center mt-4" data-aos="fade-up" data-aos-delay="250">
+          <a href="https://github.com/lemarshel/lingua-bridge" target="_blank" rel="noopener" class="read-more"><span class="lang-en">More on the method on GitHub</span><span class="lang-ru">Подробнее о методе на GitHub</span> <i class="bi bi-arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="features section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <h2><span class="lang-en">Method (Short)</span><span class="lang-ru">Метод (Кратко)</span></h2>
+        <div class="mt-2">
+          <span class="free-badge"><span class="lang-en">Free & Open‑Source</span><span class="lang-ru">Бесплатно и Open‑Source</span></span>
+        </div>
+        <p><span class="lang-en">Clear steps, no fluff.</span><span class="lang-ru">Чёткие шаги, без воды.</span></p>
+      </div>
+
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="method-card">
+              <div class="method-step">1</div>
+              <p><span class="lang-en">Start with the 4000 most useful words so every text feels readable fast.</span><span class="lang-ru">Начни с 4000 самых полезных слов, чтобы тексты быстро стали читаемыми.</span></p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="150">
+            <div class="method-card">
+              <div class="method-step">2</div>
+              <p><span class="lang-en">Group words by internal logic so patterns become obvious, not random.</span><span class="lang-ru">Группируй слова по внутренней логике, чтобы связи стали очевидными.</span></p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="method-card">
+              <div class="method-step">3</div>
+              <p><span class="lang-en">Meet them in context until recognition becomes automatic.</span><span class="lang-ru">Встречай их в контексте, пока узнавание не станет автоматическим.</span></p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="250">
+            <div class="method-card">
+              <div class="method-step">4</div>
+              <p><span class="lang-en">Repeat with focus and track progress until the system feels natural.</span><span class="lang-ru">Повторяй с фокусом и отслеживай прогресс, пока система не станет естественной.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="languages" class="services section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2><span class="lang-en">Languages</span><span class="lang-ru">Языки</span></h2>
+        <div class="mt-2">
+          <span class="free-badge"><span class="lang-en">Free & Open‑Source</span><span class="lang-ru">Бесплатно и Open‑Source</span></span>
+        </div>
+        <p><span class="lang-en">Start with the one you care about most.</span><span class="lang-ru">Начни с самого важного для тебя.</span></p>
+      </div>
+
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-chat-square-text"></i></div>
+              <h3>Chinese (Mandarin)</h3>
+              <p>5361 words · HSK 1–6 · Morphemes</p>
+              <a href="https://lemarshel.github.io/hsk-base/" class="readmore stretched-link"><span class="lang-en">Open</span><span class="lang-ru">Открыть</span> <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-translate"></i></div>
+              <h3>Arabic (Beta)</h3>
+              <p>Root families · Classical + modern vocabulary</p>
+              <a href="https://lemarshel.github.io/arabic-base/" class="readmore stretched-link"><span class="lang-en">Open</span><span class="lang-ru">Открыть</span> <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-globe"></i></div>
+              <h3><span class="lang-en">More Languages</span><span class="lang-ru">Больше языков</span></h3>
+              <p><span class="lang-en">Community‑built, open to contributors.</span><span class="lang-ru">Открыто для сообщества и вкладов.</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="about section light-background">
+      <div class="container">
+        <div class="row gy-4 align-items-start">
+          <div class="col-lg-7 content" data-aos="fade-up" data-aos-delay="100">
+            <p class="who-we-are"><span class="lang-en">Story</span><span class="lang-ru">История</span></p>
+            <h3><span class="lang-en">Why this exists.</span><span class="lang-ru">Почему это существует.</span></h3>
+            <p class="story-lead"><span class="lang-en"><strong>Most language learning is badly structured.</strong> People are given random words, isolated grammar rules, and disconnected exercises, then expected to build fluency out of fragments. That creates weak retention, slow progress, and the constant feeling that the language never fully opens.</span><span class="lang-ru"><strong>Большинство методов изучения языка плохо устроены.</strong> Людям дают случайные слова, отдельные грамматические правила и разрозненные упражнения, а потом ожидают, что из этих фрагментов somehow соберётся свободное владение. В итоге получается слабое запоминание, медленный прогресс и постоянное ощущение, что язык так и не раскрывается по-настоящему.</span></p>
+            <p><span class="lang-en"><strong>This method is built differently.</strong> Each level begins with a clear set of essential words, and those words are distributed evenly across a sequence of texts. Instead of throwing vocabulary at the learner all at once, the method spreads it with control. That means each word appears with purpose, at the right density, and in a way that can actually be absorbed.</span><span class="lang-ru"><strong>Этот метод построен иначе.</strong> Каждый уровень начинается с чёткого набора самых важных слов, и эти слова равномерно распределяются по серии текстов. Вместо того чтобы вываливать лексику сразу, метод подаёт её постепенно и осмысленно. Благодаря этому каждое слово появляется не случайно, а в нужной плотности и в такой форме, в которой его действительно можно усвоить.</span></p>
+            <p><span class="lang-en">For example, if a level contains <span class="story-accent">500 core words</span> across <span class="story-accent">40 texts</span>, those words are introduced and repeated in a balanced way. The next level adds new vocabulary through the same structure. As the system grows, the learner is not buried under chaos. They move through a designed progression where every new word has space to return, connect, and deepen.</span><span class="lang-ru">Например, если уровень содержит <span class="story-accent">500 базовых слов</span> и <span class="story-accent">40 текстов</span>, эти слова вводятся и повторяются сбалансированно. Следующий уровень добавляет новую лексику по той же логике. По мере роста системы ученик не тонет в хаосе, а движется по продуманной структуре, где у каждого нового слова есть место снова появиться, связаться с другими и закрепиться глубже.</span></p>
+            <p><span class="lang-en">That matters because words should not be memorized once and forgotten. They should be met repeatedly inside meaningful language. They should appear in context, not as dead items in a list, but as living parts of thought. Over time, repeated contact turns recognition into stability, and stability into real command.</span><span class="lang-ru">Это важно, потому что слово не должно просто один раз встретиться и исчезнуть. Оно должно возвращаться внутри осмысленного языка. Оно должно жить в контексте — не как мёртвый пункт списка, а как живая часть мысли. Со временем такие повторные встречи превращают узнавание в устойчивость, а устойчивость — в настоящее владение.</span></p>
+            <p><span class="lang-en">This is why the method works across languages. The principle stays the same: start with the core, spread it intelligently, and reinforce it through context until it becomes natural. The surface of each language may differ, but the path to strong recognition remains universal.</span><span class="lang-ru">Именно поэтому этот метод применим к любому языку. Принцип остаётся тем же: сначала ядро, потом разумное распределение, потом закрепление через контекст, пока язык не начнёт ощущаться естественно. Внешне языки разные, но путь к прочному узнаванию и владению у них общий.</span></p>
+            <p><span class="lang-en"><strong>The goal is not random exposure.</strong> The goal is precision. Every important word should receive enough repetition, enough spacing, and enough context to become strong and usable. <strong>Structure comes first.</strong> Context comes next. Repetition is never empty — it always serves understanding.</span><span class="lang-ru"><strong>Цель — не хаотичное соприкосновение с языком.</strong> Цель — точность. Каждое важное слово должно получить достаточно повторений, достаточно интервалов и достаточно контекста, чтобы стать прочным и рабочим. <strong>Сначала структура.</strong> Потом контекст. Повторение здесь не пустое — оно всегда работает на понимание.</span></p>
+            <p><span class="lang-en"><strong>That is how the language stops feeling random.</strong> That is how retention becomes stronger. That is how the foundation becomes solid enough for real fluency.</span><span class="lang-ru"><strong>Так язык перестаёт казаться случайным.</strong> Так запоминание становится сильнее. Так создаётся фундамент, достаточно прочный для настоящей беглости.</span></p>
+          </div>
+          <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="story-media">
+              <img src="assets/img/story.png" class="img-fluid" alt="Study desk">
+            </div>
+            <p class="mt-3 story-caption"><span class="lang-en">The goal is independence: reading, predicting, and using the language without brute memorization. Structure first, context next — no noise, only what creates real progress.</span><span class="lang-ru">Цель — самостоятельность: читать, предсказывать и использовать язык без грубой зубрёжки. Сначала структура, затем контекст — никаких лишних вещей, только то, что даёт реальный прогресс.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="contact section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2><span class="lang-en">Support</span><span class="lang-ru">Поддержка</span></h2>
+        <div class="mt-2">
+          <span class="free-badge"><span class="lang-en">Free & Open‑Source</span><span class="lang-ru">Бесплатно и Open‑Source</span></span>
+        </div>
+        <p><span class="lang-en">If this helps you, help us build the next languages.</span><span class="lang-ru">Если это помогает — поддержи создание новых языков.</span></p>
+      </div>
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-3 gx-3 justify-content-center support-grid">
+          <div class="col-lg-4 col-md-6">
+            <div class="info-item">
+              <i class="bi bi-paypal"></i>
+              <h3>PayPal</h3>
+              <p>paypal.me/SultanKulbassov</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="info-item">
+              <i class="bi bi-envelope"></i>
+              <h3>Email</h3>
+              <p><a id="gmail-link" href="#" target="_blank" rel="noopener">lemarshel@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="info-item">
+              <i class="bi bi-telegram"></i>
+              <h3>Telegram</h3>
+              <p>@hinataace</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="copyright text-center">
+        <p><span class="lang-en">Lingua Bridge · Open-source · Free Forever</span><span class="lang-ru">Lingua Bridge · Открытый код · Бесплатно навсегда</span></p>
+        <p>Sultan Kulbassov · @hinataace · lemarshel@gmail.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="tsparticles"></div>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.9.1/tsparticles.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    (function(){
+      var body=document.body;
+      var langButtons=document.querySelectorAll('[data-lang]');
+      var themeButtons=document.querySelectorAll('[data-theme]');
+      var speakButtons=document.querySelectorAll('.speak-btn');
+      var syncTimer;
+      var floatersStarted = false;
+
+      function startFlagFloaters(){
+        if(floatersStarted) return;
+        floatersStarted = true;
+        var container = document.createElement('div');
+        container.id = 'flag-floaters';
+        document.body.appendChild(container);
+        var flags = [
+          'assets/img/flags/cn.png','assets/img/flags/sa.png','assets/img/flags/de.png','assets/img/flags/jp.png',
+          'assets/img/flags/kr.png','assets/img/flags/es.png','assets/img/flags/fr.png','assets/img/flags/ru.png',
+          'assets/img/flags/in.png','assets/img/flags/pt.png','assets/img/flags/it.png','assets/img/flags/tr.png',
+          'assets/img/flags/nl.png','assets/img/flags/se.png','assets/img/flags/pl.png','assets/img/flags/th.png',
+          'assets/img/flags/vn.png','assets/img/flags/id.png','assets/img/flags/gr.png','assets/img/flags/cz.png',
+          'assets/img/flags/ro.png','assets/img/flags/hu.png','assets/img/flags/fi.png','assets/img/flags/il.png',
+          'assets/img/flags/ir.png','assets/img/flags/ke.png','assets/img/flags/ua.png','assets/img/flags/dk.png',
+          'assets/img/flags/no.png','assets/img/flags/ph.png'
+        ];
+        var count = flags.length;
+        var shuffled = flags.slice().sort(function(){ return Math.random() - 0.5; });
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        for(var i=0;i<count;i++){
+          var img = document.createElement('img');
+          img.src = shuffled[i];
+          img.style.left = '0';
+          img.style.top = '0';
+          img.style.opacity = (0.12 + Math.random()*0.18).toFixed(2);
+          var scale = 0.6 + Math.random()*0.6;
+          var startX = Math.random() * w;
+          var endX = startX + (Math.random()*0.9 - 0.45) * w;
+          var startY = h + Math.random() * h * 0.3;
+          var endY = -200 - Math.random() * 200;
+          var rotStart = Math.random() * 360;
+          var rotEnd = rotStart + (Math.random()*720 + 360);
+          var duration = 14000 + Math.random() * 26000;
+          var delay = -Math.random() * duration;
+          container.appendChild(img);
+          img.animate([
+            { transform: 'translate3d(' + startX.toFixed(0) + 'px,' + startY.toFixed(0) + 'px,0) rotate(' + rotStart.toFixed(0) + 'deg) scale(' + scale.toFixed(2) + ')' },
+            { transform: 'translate3d(' + endX.toFixed(0) + 'px,' + endY.toFixed(0) + 'px,0) rotate(' + rotEnd.toFixed(0) + 'deg) scale(' + scale.toFixed(2) + ')' }
+          ], {
+            duration: duration,
+            iterations: Infinity,
+            delay: delay,
+            easing: 'linear'
+          });
+        }
+      }
+
+      function ensureFlagBackground(){
+        setTimeout(function(){
+          var canvas = document.querySelector('#tsparticles canvas');
+          if(!canvas || canvas.width < 50 || canvas.height < 50){ startFlagFloaters(); }
+          else { startFlagFloaters(); }
+        }, 1200);
+      }
+
+      function syncStoryMediaHeight(){
+        var story=document.getElementById('story');
+        if(!story) return;
+        var text=story.querySelector('.story-text');
+        var media=story.querySelector('.story-media');
+        var caption=story.querySelector('.story-caption');
+        if(!text || !media) return;
+        if(window.innerWidth < 992){
+          media.style.height = 'auto';
+          return;
+        }
+        var captionH = caption ? caption.offsetHeight : 0;
+        var gap = 12;
+        var target = Math.max(220, text.offsetHeight - captionH - gap);
+        media.style.height = target + 'px';
+      }
+      function syncStoryMediaHeightDebounced(){
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(syncStoryMediaHeight, 120);
+      }
+
+      function setLang(lang){
+        body.classList.remove('lang-en','lang-ru');
+        body.classList.add('lang-'+lang);
+        langButtons.forEach(function(b){ b.classList.toggle('active', b.dataset.lang===lang); });
+        updateTitles(lang);
+        syncStoryMediaHeightDebounced();
+        localStorage.setItem('lb_lang', lang);
+      }
+      function setTheme(theme){
+        body.classList.toggle('theme-dark', theme==='dark');
+        themeButtons.forEach(function(b){ b.classList.toggle('active', b.dataset.theme===theme); });
+        localStorage.setItem('lb_theme', theme);
+      }
+      function updateTitles(lang){
+        speakButtons.forEach(function(btn){ btn.title = (lang==='ru') ? 'Прослушать' : 'Play'; });
+        var gl=document.getElementById('gmail-link');
+        if(gl){
+          var subj = lang==='ru' ? 'По поводу Сайта' : 'Question about Lingua Bridge';
+          var bodyTxt = lang==='ru' ? 'Привет, Султан!' : 'Hi, Sultan!';
+          gl.href = 'https://mail.google.com/mail/?view=cm&fs=1&to=lemarshel@gmail.com&su=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(bodyTxt);
+        }
+      }
+
+      var fallbackAudio = null;
+      function stopAllAudio(){
+        try{ if(typeof speechSynthesis!=='undefined') speechSynthesis.cancel(); }catch(e){}
+        if(fallbackAudio){ try{ fallbackAudio.pause(); }catch(e){} fallbackAudio=null; }
+      }
+      function chunkTTS(text, maxLen){
+        maxLen = maxLen || 160;
+        if(text.length <= maxLen) return [text];
+        var parts=[]; for(var i=0;i<text.length;i+=maxLen){ parts.push(text.slice(i,i+maxLen)); }
+        return parts;
+      }
+      function playFallbackTTS(text, onDone){
+        var chunks = chunkTTS(text, 160);
+        var idx = 0;
+        function playNext(){
+          if(idx >= chunks.length){ if(onDone) onDone(); return; }
+          var url = 'https://translate.googleapis.com/translate_tts?client=gtx&tl=zh-CN&q=' + encodeURIComponent(chunks[idx]);
+          var a = new Audio();
+          fallbackAudio = a;
+          a.onended = function(){ idx++; playNext(); };
+          a.onerror = function(){ idx++; playNext(); };
+          a.src = url;
+          var p = a.play();
+          if(p && p.catch){ p.catch(function(){ idx++; playNext(); }); }
+        }
+        playNext();
+      }
+      function speakText(text, lang){
+        if(!text) return;
+        var isZh = lang && lang.toLowerCase().indexOf('zh') === 0;
+        stopAllAudio();
+        if(typeof speechSynthesis==='undefined'){
+          if(isZh) playFallbackTTS(text);
+          return;
+        }
+        try{
+          var u=new SpeechSynthesisUtterance(text);
+          if(lang) u.lang=lang;
+          if(isZh) u.rate=0.9;
+          u.onerror = function(){ if(isZh) playFallbackTTS(text); };
+          speechSynthesis.speak(u);
+        }catch(e){ if(isZh) playFallbackTTS(text); }
+      }
+
+      langButtons.forEach(function(btn){ btn.addEventListener('click', function(){ setLang(this.dataset.lang); }); });
+      themeButtons.forEach(function(btn){ btn.addEventListener('click', function(){ setTheme(this.dataset.theme); }); });
+      speakButtons.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if(this.dataset.sayZh){ speakText(this.dataset.sayZh, this.dataset.langZh || 'zh-CN'); }
+        });
+      });
+
+      var storedLang=localStorage.getItem('lb_lang');
+      var storedTheme=localStorage.getItem('lb_theme');
+      if(!storedTheme){
+        storedTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      }
+      setTheme(storedTheme==='dark'?'dark':'light');
+      setLang(storedLang==='ru'?'ru':'en');
+      window.addEventListener('resize', syncStoryMediaHeightDebounced);
+      window.addEventListener('load', syncStoryMediaHeightDebounced);
+
+      window.addEventListener('load', function(){
+        if(window.tsParticles){
+          tsParticles.load('tsparticles', {
+            fullScreen: { enable: true, zIndex: 0 },
+            background: { color: { value: 'transparent' } },
+            detectRetina: true,
+            fpsLimit: 60,
+            interactivity: { events: { onHover: { enable: false }, onClick: { enable: false } } },
+            particles: {
+              number: { value: 28, density: { enable: true, area: 900 } },
+              opacity: { value: 0.7, random: { enable: true, minimumValue: 0.3 } },
+              size: { value: 70, random: { enable: true, minimumValue: 40 } },
+              move: {
+                direction: 'none',
+                angle: { value: 90, offset: 45 },
+                random: true,
+                speed: 0.6,
+                outModes: { default: 'out' },
+                straight: false,
+                drift: 0.6
+              },
+              rotate: { value: { min: 0, max: 360 }, direction: 'random', animation: { enable: true, speed: 4 } },
+              shape: {
+                type: 'image',
+                image: [
+                  { src: 'assets/img/flags/cn.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/sa.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/de.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/jp.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/kr.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/es.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/fr.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/ru.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/in.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/pt.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/it.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/tr.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/nl.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/se.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/pl.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/th.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/vn.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/id.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/gr.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/cz.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/ro.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/hu.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/fi.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/il.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/ir.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/ke.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/ua.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/dk.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/no.png', width: 48, height: 36 },
+                  { src: 'assets/img/flags/ph.png', width: 48, height: 36 }
+                ]
+              }
+            },
+            responsive: [
+              { maxWidth: 768, options: { particles: { number: { value: 12 }, size: { value: 50 } } } }
+            ]
+          });
+        }
+      });
+      ensureFlagBackground();
+    })();
+  </script>
+
+</body>
+</html>

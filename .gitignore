@@ -1,0 +1,4 @@
+source/raw_pdfs/
+__pycache__/
+*.pyc
+desktop.ini
